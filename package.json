@@ -5,10 +5,12 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "prisma-prod":"prisma migrate deploy && prisma db seed",
+    "prisma-test":"dotenv -e .env.test prisma migrate reset --skip--seed",
+    "build": "tsc && npm run prisma-prod",
     "dev": "nodemon src/index.ts",
-    "build": "tsc",
-    "start": "node dist/index.js",
-    "test": "dotenv -e .env.test prisma migrate dev && dotenv -e .env.test prisma db seed && NODE_OPTIONS=--experimental-vm-modules dotenv -e .env.test jest -i"
+    "start": "node dist/src/index.js",
+    "test": "npm run prisma-test && dotenv -e .env.test prisma migrate dev && NODE_OPTIONS=--experimental-vm-modules dotenv -e .env.test jest -- -i"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
