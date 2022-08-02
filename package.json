@@ -5,12 +5,15 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "prisma-prod":"prisma migrate deploy && prisma db seed",
-    "prisma-test":"dotenv -e .env.test prisma migrate reset --skip--seed",
+    "prisma-prod": "prisma migrate deploy && prisma db seed",
+    "prisma-test": "dotenv -e .env.test prisma migrate reset --skip--seed",
     "build": "tsc && npm run prisma-prod",
-    "dev": "nodemon src/index.ts",
     "start": "node dist/src/index.js",
-    "test": "npm run prisma-test && dotenv -e .env.test prisma migrate dev && NODE_OPTIONS=--experimental-vm-modules dotenv -e .env.test jest -- -i"
+    "dev": "nodemon src/server.ts",
+    "dev:test": "npm run prisma-test && dotenv -e .env.test nodemon src/server.ts",
+    "test": "npm run prisma-test && npm run test-options dotenv -e .env.test jest -- -i -- app.test.ts",
+    "test:unit":"npm run test-options jest -- -i --coverage --collectCoverageFrom=src/services/ -- unit.test.ts",
+    "test-options":"NODE_OPTIONS=--experimental-vm-modules"
   },
   "prisma": {
     "seed": "ts-node prisma/seed.ts"
